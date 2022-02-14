@@ -1,0 +1,122 @@
+<!-- Created By CodingNepal - www.codingnepalweb.com  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prometric</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAweome CDN Link for Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+
+    <!-- modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p class="desc"></p>
+          <img class="pic" src="" alt="">
+        </div>
+      
+      </div>
+
+    <!-- Quiz Box -->
+    <div class="quiz_box">
+        <header>
+            <div id="title" class="title">Prometric</div>
+            <div class="timer note">
+                <div class="time_left_txt">NOTE</div>
+                <!-- <div class="timer_sec">15</div> -->
+            </div>
+            <div class="timer imageBtn">
+                <div class="time_left_txt">IMAGE</div>
+                <!-- <div class="timer_sec">15</div> -->
+            </div>
+            <div class="time_line"></div>
+        </header>
+        <section>
+            <div class="que_text">
+                <!-- Here I've inserted question from JavaScript -->
+            </div>
+            <div class="option_list">
+                <!-- Here I've inserted options from JavaScript -->
+            </div>
+        </section>
+
+        <!-- footer of Quiz Box -->
+        <footer>
+            <div class="total_que">
+                <!-- Here I've inserted Question Count Number from JavaScript -->
+            </div>
+            <p style="font-weight: 600;" class="clock">00:00 AM</p>
+            <button class="prev_btn">Prev</button>
+            <button class="next_btn">Next</button>
+        </footer>
+    </div>
+
+    <!-- Result Box -->
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="complete_text">You've completed the Quiz!</div>
+        <div class="score_text">
+            <!-- Here I've inserted Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="restart">Replay Quiz</button>
+            <button class="quit">Quit Quiz</button>
+        </div>
+    </div>
+
+    <!-- Inside this JavaScript file I've inserted Questions and Options only -->
+    <script>
+        let go = window.location.href
+        go = go.substring(go.indexOf('?') + 1, go.length);
+        let scrpt = "mcq/" + go
+        document.write("<script type='text/javascript' src='"+ scrpt + "'><\/scr" + "ipt>");
+        let title = document.getElementById("title");
+        go = go.replace('/', " ");
+        go = go.replace('.js', "");
+        go = go.replaceAll('%20', " ");
+        title.innerText = go;
+    </script>
+    <!-- Inside this JavaScript file I've coded all Quiz Codes -->
+    <script src="js/script.js"></script>
+    <script>quizStart();</script>
+    <script>
+        function startTime() {
+            const controller = new AbortController()
+
+            const timeoutId = setTimeout(() => controller.abort(), 5000)
+
+            fetch('https://worldtimeapi.org/api/timezone/Asia/Kolkata', { signal: controller.signal })
+            .then(response => response.json())
+            .then(data => {
+                let date = data.datetime
+                let ap = ''
+                date = date.substring(date.search('T') + 1, date.search('T') + 6)
+                ap = date.charAt(0) + date.charAt(1)
+
+                if (ap < '12') {
+                    ap = 'AM'
+                }
+                else if (ap == '00') {
+                    ap = 'AM'
+                }
+                else {
+                    ap = 'PM'
+                }
+                date = date + ' ' + ap
+                document.getElementsByClassName("clock")[0].innerHTML = date;
+                clearTimeout(timeoutId)
+            })
+            setTimeout(startTime, 5000);
+        }
+        startTime();
+    </script>
+</body>
+</html>
